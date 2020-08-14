@@ -37,4 +37,4 @@ volumes:
 
 
 
-**Credit:** Following this repo [here](https://medium.com/@aschmelyun).
+**Credit:** Following this repo [here](https://github.com/aschmelyun/laravel-grafana-dashboard).
