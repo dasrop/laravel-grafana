@@ -1,5 +1,5 @@
 # Laravel Grafana
-A pretty simplified docker-compose workflow that sets up a LEMP network of containers for local Laravel development. Creating this project for practicing Grafana, Prometheus and Loki to monitor the performance of Laravel application.
+A simple docker-compose workflow to set up a LEMP stack with Grafana, Prometheus and Loki docker containers. Creating this project for monitoring application performance of a Laravel application using Grafana, Prometheus and Loki.
 
 ## Usage
 
