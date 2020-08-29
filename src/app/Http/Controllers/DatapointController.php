@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Datapoint;
 use Illuminate\Http\Request;
-use App\Datapoint;
 
 class DatapointController extends Controller
 {
+    public function index()
+    {
+        return Datapoint::all();
+    }
 
     public function store(Request $request)
     {
@@ -15,11 +19,8 @@ class DatapointController extends Controller
             'value' => 'required'
         ]);
 
-        return Datapoint::create([
-            'name' => $request->input('name'),
-            'value' => $request->input('value'),
-            'cast' => $request->input('cast')
-        ]);
+        return Datapoint::create(
+            $request->only('name', 'value', 'cast')
+        );
     }
-
 }
