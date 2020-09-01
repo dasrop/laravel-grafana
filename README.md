@@ -5,7 +5,7 @@ A simple docker-compose workflow to set up a LEMP stack with Grafana, Prometheus
 
 To get started, make sure you have [Docker installed](https://docs.docker.com/docker-for-mac/install/) on your system, and then clone this repository.
 
-First add your entire Laravel project to the `src` folder, then open a terminal and from this cloned repository's root run `docker-compose up -d --build`. Open up your browser of choice to [http://localhost:8080](http://localhost:8080) and you should see your Laravel app running as intended. 
+From the project's root directory run `docker-compose up -d --build`. Open up your browser of choice to [http://localhost:8080](http://localhost:8080) and you should see your Laravel app is running. 
 
 We have added three more container that handle Composer, NPM, and Artisan commands without having to have these platforms installed on your local computer. Use the following command templates from your project root:
 
