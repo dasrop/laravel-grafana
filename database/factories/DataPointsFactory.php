@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Datapoint;
+use App\Models\Datapoint;
 use Faker\Generator as Faker;
 
 $factory->define(Datapoint::class, function (Faker $faker) {

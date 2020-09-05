@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Datapoint;
 use Illuminate\Database\Seeder;
 
 class DataPointsTableSeeder extends Seeder
@@ -11,6 +12,6 @@ class DataPointsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Datapoint::class, 10000)->create();
+        factory(Datapoint::class, 10000)->create();
     }
 }
