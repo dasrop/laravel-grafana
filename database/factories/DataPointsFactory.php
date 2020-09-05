@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(Datapoint::class, function (Faker $faker) {
     return [
         'name' => "temperature",
-        'value' => $faker->randomFloat(100, 0),
+        'value' => $faker->randomFloat(0, 90),
         'cast' => "float",
     ];
 });
