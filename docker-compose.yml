@@ -3,6 +3,9 @@ version: '3'
 networks:
   laravel:
 
+volumes:
+  app_data: {}
+
 services:
   nginx:
     image: nginx:stable-alpine
@@ -49,21 +52,6 @@ services:
     networks:
       - laravel
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    volumes:
-      - ./:/var/www/html
-      - ./.docker/config/grafana.ini:/etc/grafana/grafana.ini
-      - ./.docker/grafana:/var/lib/grafana
-    ports:
-      - "3000:3000"
-    depends_on:
-      - php
-      - mysql
-    networks:
-      - laravel
-
   composer:
     image: composer:latest
     container_name: composer
@@ -94,5 +82,36 @@ services:
       - mysql
     working_dir: /var/www/html
     entrypoint: ['php', '/var/www/html/artisan']
+    networks:
+      - laravel
+
+  loki:
+    image: grafana/loki:1.4.1
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - laravel
+
+  promtail:
+    image: grafana/promtail:v1.3.0
+    volumes:
+      - app_data:/var/www/html/storage/logs
+    command: -config.file=/etc/promtail/docker-config.yaml
+    networks:
+      - laravel
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - ./:/var/www/html
+      - ./.docker/config/grafana.ini:/etc/grafana/grafana.ini
+      - ./.docker/grafana:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - php
+      - mysql
     networks:
       - laravel
