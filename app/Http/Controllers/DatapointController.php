@@ -9,7 +9,7 @@ class DatapointController extends Controller
 {
     public function index()
     {
-        return Datapoint::all();
+        return Datapoint::paginate(20);
     }
 
     public function store(Request $request)
