@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Laravel Grafana</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -62,23 +62,11 @@
                 margin-bottom: 30px;
             }
         </style>
+
+        <?php echo BladeUIKit\BladeUIKit::outputStyles(); ?>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            <?php if(Route::has('login')): ?>
-                <div class="top-right links">
-                    <?php if(auth()->guard()->check()): ?>
-                        <a href="<?php echo e(url('/home')); ?>">Home</a>
-                    <?php else: ?>
-                        <a href="<?php echo e(route('login')); ?>">Login</a>
-
-                        <?php if(Route::has('register')): ?>
-                            <a href="<?php echo e(route('register')); ?>">Register</a>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
-
             <div class="content">
                 <div class="title m-b-md">
                     Laravel
@@ -94,8 +82,24 @@
                     <a href="https://vapor.laravel.com">Vapor</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
+
+                 <?php if (isset($component)) { $__componentOriginal83c85d4dfaa392bc65705968ef722cabfe512ea1 = $component; } ?>
+<?php $component = $__env->getContainer()->make(BladeUIKit\Components\Alerts\Alert::class, []); ?>
+<?php $component->withName('alert'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['class' => 'alert alert-success']); ?>
+<?php if (isset($__componentOriginal83c85d4dfaa392bc65705968ef722cabfe512ea1)): ?>
+<?php $component = $__componentOriginal83c85d4dfaa392bc65705968ef722cabfe512ea1; ?>
+<?php unset($__componentOriginal83c85d4dfaa392bc65705968ef722cabfe512ea1); ?>
+<?php endif; ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?> 
+
             </div>
         </div>
+
+        <?php echo BladeUIKit\BladeUIKit::outputScripts(); ?>
     </body>
 </html>
 <?php /**PATH /var/www/html/resources/views/welcome.blade.php ENDPATH**/ ?>
