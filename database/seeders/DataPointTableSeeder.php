@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Datapoint;
 use Illuminate\Database\Seeder;
 
-class DataPointsTableSeeder extends Seeder
+class DataPointTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
