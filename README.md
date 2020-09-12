@@ -22,6 +22,7 @@ The created container and their ports (if used) are as follows:
 - **composer**
 - **artisan**
 - **grafana** - `:3000`
+- **loki** - `:3100`
 
 ## Persistent MySQL Storage
 
