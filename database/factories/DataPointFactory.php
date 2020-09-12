@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Datapoint;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class DataPointsFactory extends Factory
+class DataPointFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

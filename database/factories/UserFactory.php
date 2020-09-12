@@ -33,7 +33,7 @@ class UserFactory extends Factory
 
     public function admin()
     {
-        $this->state([
+        return $this->state([
             'email' => 'admin@email.com',
             'password' => bcrypt('admin')
         ]);
@@ -41,7 +41,7 @@ class UserFactory extends Factory
 
     public function user()
     {
-        $this->state([
+        return $this->state([
             'email' => 'user@email.com',
             'password' => bcrypt('user')
         ]);
