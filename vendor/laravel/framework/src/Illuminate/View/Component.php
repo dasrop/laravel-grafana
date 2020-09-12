@@ -4,6 +4,7 @@ namespace Illuminate\View;
 
 use Closure;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
@@ -49,14 +50,14 @@ abstract class Component
     /**
      * Get the view / view contents that represent the component.
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string
      */
     abstract public function render();
 
     /**
      * Resolve the Blade view or view file that should be used when rendering the component.
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string
      */
     public function resolveView()
     {
@@ -66,11 +67,22 @@ abstract class Component
             return $view;
         }
 
-        $factory = Container::getInstance()->make('view');
+        if ($view instanceof Htmlable) {
+            return $view;
+        }
 
-        return $factory->exists($view)
-                    ? $view
-                    : $this->createBladeViewFromString($factory, $view);
+        $resolver = function ($view) {
+            $factory = Container::getInstance()->make('view');
+
+            return $factory->exists($view)
+                        ? $view
+                        : $this->createBladeViewFromString($factory, $view);
+        };
+
+        return $view instanceof Closure ? function (array $data = []) use ($view, $resolver) {
+            return $resolver($view($data));
+        }
+        : $resolver($view);
     }
 
     /**
@@ -87,7 +99,7 @@ abstract class Component
             $directory = Container::getInstance()['config']->get('view.compiled')
         );
 
-        if (! file_exists($viewFile = $directory.'/'.sha1($contents).'.blade.php')) {
+        if (! is_file($viewFile = $directory.'/'.sha1($contents).'.blade.php')) {
             if (! is_dir($directory)) {
                 mkdir($directory, 0755, true);
             }
@@ -126,6 +138,9 @@ abstract class Component
             $reflection = new ReflectionClass($this);
 
             static::$propertyCache[$class] = collect($reflection->getProperties(ReflectionProperty::IS_PUBLIC))
+                ->reject(function (ReflectionProperty $property) {
+                    return $property->isStatic();
+                })
                 ->reject(function (ReflectionProperty $property) {
                     return $this->shouldIgnore($property->getName());
                 })
@@ -182,8 +197,21 @@ abstract class Component
     protected function createVariableFromMethod(ReflectionMethod $method)
     {
         return $method->getNumberOfParameters() === 0
-                        ? $this->{$method->getName()}()
+                        ? $this->createInvokableVariable($method->getName())
                         : Closure::fromCallable([$this, $method->getName()]);
+    }
+
+    /**
+     * Create an invokable, toStringable variable for the given component method.
+     *
+     * @param  string  $method
+     * @return \Illuminate\View\InvokableComponentVariable
+     */
+    protected function createInvokableVariable(string $method)
+    {
+        return new InvokableComponentVariable(function () use ($method) {
+            return $this->{$method}();
+        });
     }
 
     /**
@@ -211,6 +239,7 @@ abstract class Component
             'resolveView',
             'shouldRender',
             'view',
+            'withName',
             'withAttributes',
         ], $this->except);
     }

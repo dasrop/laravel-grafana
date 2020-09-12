@@ -219,6 +219,17 @@ class Factory
     }
 
     /**
+     * Assert how many requests have been recorded.
+     *
+     * @param  int  $count
+     * @return void
+     */
+    public function assertSentCount($count)
+    {
+        PHPUnit::assertCount($count, $this->recorded);
+    }
+
+    /**
      * Assert that every created response sequence is empty.
      *
      * @return void
@@ -239,7 +250,7 @@ class Factory
      * @param  callable  $callback
      * @return \Illuminate\Support\Collection
      */
-    public function recorded($callback)
+    public function recorded($callback = null)
     {
         if (empty($this->recorded)) {
             return collect();

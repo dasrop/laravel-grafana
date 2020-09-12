@@ -11,7 +11,7 @@ class StorageLinkCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'storage:link';
+    protected $signature = 'storage:link {--relative : Create the symbolic link using relative paths}';
 
     /**
      * The console command description.
@@ -27,14 +27,21 @@ class StorageLinkCommand extends Command
      */
     public function handle()
     {
+        $relative = $this->option('relative');
+
         foreach ($this->links() as $link => $target) {
             if (file_exists($link)) {
                 $this->error("The [$link] link already exists.");
+                continue;
+            }
+
+            if ($relative) {
+                $this->laravel->make('files')->relativeLink($target, $link);
             } else {
                 $this->laravel->make('files')->link($target, $link);
-
-                $this->info("The [$link] link has been connected to [$target].");
             }
+
+            $this->info("The [$link] link has been connected to [$target].");
         }
 
         $this->info('The links have been created.');

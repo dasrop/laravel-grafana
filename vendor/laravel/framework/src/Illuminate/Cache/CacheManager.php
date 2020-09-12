@@ -214,7 +214,11 @@ class CacheManager implements FactoryContract
 
         return $this->repository(
             new DatabaseStore(
-                $connection, $config['table'], $this->getPrefix($config)
+                $connection,
+                $config['table'],
+                $this->getPrefix($config),
+                $config['lock_table'] ?? 'cache_locks',
+                $config['lock_lottery'] ?? [2, 100]
             )
         );
     }
@@ -351,6 +355,19 @@ class CacheManager implements FactoryContract
         }
 
         return $this;
+    }
+
+    /**
+     * Disconnect the given driver and remove from local cache.
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?? $this->getDefaultDriver();
+
+        unset($this->stores[$name]);
     }
 
     /**
