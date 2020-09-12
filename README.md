@@ -33,7 +33,7 @@ By default, whenever you down the docker-compose network, your MySQL data will b
 
 ```
 volumes:
-  - ./mysql:/var/lib/mysql
+  - ./.docker/mysql:/var/lib/mysql
 ```
 
 
